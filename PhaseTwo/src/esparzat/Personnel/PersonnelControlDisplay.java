@@ -7,39 +7,14 @@ import java.util.Scanner;
  * This class contains the methods to check if the employee file exists, add
  * employee, and remove employee that the managers use.
  */
-public class AddRemoveEmployeesDisplay {
+public class PersonnelControlDisplay {
 	private static Scanner sc = new Scanner(System.in);
 	private static Employee em;
-
+	static File f;
+	static PrintWriter pw = null;
 	static String e = Employee.EMPLOYEE_LEVEL;
 	static String m = Employee.MANAGER_LEVEL;
 	static String a = Employee.ADMIN_LEVEL;
-	static File f;
-	static PrintWriter pw = null;
-
-	/**
-	 * This method checks to see if the employee.txt file exists (which it
-	 * should).
-	 */
-
-	public static void doesFileExist() {
-		f = new File("Employee.txt");
-
-		if (!f.exists()) {
-			try {
-				f.createNewFile();
-			} catch (IOException e) {
-				System.out.println("Could not create file.");
-				System.exit(-1);
-			}
-		}
-
-		try {
-			pw = new PrintWriter(new FileOutputStream(f, true));
-		} catch (FileNotFoundException e) {
-			System.out.println("Could not locate file.");
-		}
-	}
 
 	/**
 	 * This method prompts the manager to enter in the information to add a new
@@ -49,7 +24,7 @@ public class AddRemoveEmployeesDisplay {
 	public static void addEmployee() {
 		// todo: verify someone cannot enter a duplicate username.
 
-		File f = new File("Employee.txt");
+		File f = new File("Personnel.txt");
 
 		String choice = "y";
 		try {
@@ -57,15 +32,16 @@ public class AddRemoveEmployeesDisplay {
 
 			while (choice.equalsIgnoreCase("y")) {
 				System.out
-						.print("Please enter the username you would like to add: ");
+						.print("\nCreate new username: ");
 				String username = sc.nextLine().toUpperCase();
 
 				System.out
-						.print("Please enter the password you would like to add: ");
+						.print("\nCreate new password:");
 				char[] password = sc.nextLine().toCharArray();
 
 				System.out
-						.print("What is the access level? E for Employee or M for Manager ");
+						.print("\nThe valid options are E for Employee or M for Manager")
+						.print("\nEnter new employee access level:");
 				String levelEntered = sc.nextLine();
 
 				String employeeLevel = null;
@@ -83,14 +59,13 @@ public class AddRemoveEmployeesDisplay {
 						break;
 					default:
 						System.out
-								.print("Please enter a valid access level. Employee or Manager ");
+								.print("\n ");
 						levelEntered = sc.nextLine();
 						successful = false;
 					}
 				}
 
 				em = new Employee(username, password, employeeLevel);
-				// String choice = "y";
 
 				pw.write(em.getAccessLevel() + "\t");
 				pw.write(em.getUsername() + "\t");
@@ -101,9 +76,9 @@ public class AddRemoveEmployeesDisplay {
 
 				pw.close();
 			}
-		} catch (FileNotFoundException e1) {
-			e1.printStackTrace(); // To change body of catch statement use File
-									// | Settings | File Templates.
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+									
 		}
 	}
 
@@ -114,7 +89,7 @@ public class AddRemoveEmployeesDisplay {
 	 */
 
 	public static void removeEmployee() {
-		File f = new File("Employee.txt");
+		File f = new File("Personnel.txt");
 
 		String choice = "y";
 
@@ -124,12 +99,12 @@ public class AddRemoveEmployeesDisplay {
 			while (choice.equalsIgnoreCase("y")) {
 
 				System.out
-						.print("Please enter the username you would like to remove: ");
+						.print("\nUsername to delete: ");
 				String username = sc.nextLine().toUpperCase();
 				Boolean found = false;
 
 				if (username.equalsIgnoreCase("ADMIN")) {
-					System.out.println("This user cannot be removed.");
+					System.out.println("You can not remove this user.");
 					ManagersDisplay.initialMgrsDisplay();
 				} else {
 					for (Employee e : ExtractEmployees.employee) {
@@ -142,7 +117,7 @@ public class AddRemoveEmployeesDisplay {
 					}
 
 					if (!found) {
-						System.out.println("This employee was not found.");
+						System.out.println("This user is not available.");
 						ManagersDisplay.initialMgrsDisplay();
 					} else {
 						for (Employee e : ExtractEmployees.employee) {
@@ -161,9 +136,9 @@ public class AddRemoveEmployeesDisplay {
 				}
 
 			}
-		} catch (FileNotFoundException e1) {
+		} catch (FileNotFoundException e) {
 
-			e1.printStackTrace();
+			e.printStackTrace();
 		}
 	}
 }

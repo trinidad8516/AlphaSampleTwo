@@ -10,7 +10,7 @@ import esparzat.Personnel.LoginDisplay;
 public class POPapp {
 
 	public static void main(String[] args) {
-		AddRemoveEmployeesDisplay.doesFileExist();
+		ExtractEmployees.CheckIfFileExist();
 		ExtractEmployees.readEmployeeFile();
 		ProductAndInventoryDisplay.doesFileExist();
 		ExtractProductsandInventory.readProductFile();

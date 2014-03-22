@@ -6,18 +6,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class ExtractEmployees {
+public class ConnectToEmployees {
 
 	public static List<Employee> employee = new ArrayList<>();
 
 	/**
-	 * This method reads out the content of the employee.txt file to list.
+	 * This method reads out the content of the .txt file to list.
 	 * 
 	 * @return employee
 	 */
 	public static List<Employee> readEmployeeFile() {
 
-		File f = new File("Employee.txt");
+		File f = new File("Personnel.txt");
 
 		Scanner sc = null;
 
@@ -40,5 +40,28 @@ public class ExtractEmployees {
 
 		return employee;
 
+	}
+
+	/**
+	 * This method checks to see if the Personnel.txt file exists
+	 */
+
+	public static void CheckIfFileExist() {
+		f = new File("Personnel.txt");
+
+		if (!f.exists()) {
+			try {
+				f.createNewFile();
+			} catch (IOException e) {
+				System.out.println("Not able to create file.");
+				System.exit(-1);
+			}
+		}
+
+		try {
+			pw = new PrintWriter(new FileOutputStream(f, true));
+		} catch (FileNotFoundException e) {
+			System.out.println("Not able to locate file.");
+		}
 	}
 }
